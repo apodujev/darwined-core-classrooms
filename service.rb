@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/reloader' if development?
 require'./environments'
-require './models/post'
+require './models/room'
 
 # the HTTP entry points to our service
 
@@ -11,63 +11,63 @@ before do
   content_type 'application/json'
 end
 
-# get all posts
-get '/api/v1/posts' do
-  Post.all.to_json
+# get all rooms
+get '/api/v1/rooms' do
+  Room.all.to_json
 end
 
-# get a post by id
-get '/api/v1/posts/:id' do
-  post = Post.find_by_id(params[:id])
-  if post
-    post.to_json
+# get a room by id
+get '/api/v1/rooms/:id' do
+  room = Room.find_by_id(params[:id])
+  if room
+    room.to_json
   else
-    error 404, {:error => "post not found"}.to_json
+    error 404, {:error => "room not found"}.to_json
   end
 end
 
-# create a post
-post '/api/v1/posts' do
+# create a room
+post '/api/v1/rooms' do
   begin
-    post = Post.create(JSON.parse(request.body.read))
-    if post.valid?
-      post.to_json
+    room = Room.create(JSON.parse(request.body.read))
+    if room.valid?
+      room.to_json
     else
-      error 400, post.errors.to_json # :bad_request
+      error 400, room.errors.to_json # :bad_request
     end
   rescue => e
     error 400, {:error => e.message}.to_json
   end
 end
 
-# update a post
-put '/api/v1/posts/:id' do
-  post = Post.find_by_id(params['id'])
-  if post
+# update a room
+put '/api/v1/rooms/:id' do
+  room = Room.find_by_id(params['id'])
+  if room
     begin
       attributes = JSON.parse(request.body.read)
-      updated_post = post.update_attributes(attributes)
-      if updated_post
-        post.to_json
+      updated_room = room.update_attributes(attributes)
+      if updated_room
+        room.to_json
       else
-        error 400, post.errors.to_json
+        error 400, room.errors.to_json
       end
     rescue => e
       error 400, {:error => e.message}.to_json
     end
   else
-    error 404, {:error => 'post not found'}.to_json
+    error 404, {:error => 'room not found'}.to_json
   end
 end
 
-# delete a post
-delete '/api/v1/posts/:id' do
-  post = Post.find_by_id(params[:id])
-  if post
-    post.destroy
-    post.to_json
+# delete a room
+delete '/api/v1/rooms/:id' do
+  room = Room.find_by_id(params[:id])
+  if room
+    room.destroy
+    room.to_json
   else
-    error 404, {:error => 'post not found'}.to_json
+    error 404, {:error => 'room not found'}.to_json
   end
 end
 

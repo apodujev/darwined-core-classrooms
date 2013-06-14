@@ -18,92 +18,92 @@ end
 # The test for our service
 describe "service" do
   before(:each) do
-    Post.delete_all
+    Room.delete_all
   end
 
-  describe "GET ON /api/v1/posts" do
-    it "should return all posts" do
-      Post.create(:title => 'A', :body => 'A')
-      Post.create(:title => 'B', :body => 'B')
-      get '/api/v1/posts'
+  describe "GET ON /api/v1/rooms" do
+    it "should return all rooms" do
+      Room.create(:name => 'A', :capacity => 50)
+      Room.create(:name => 'B', :capacity => 100)
+      get '/api/v1/rooms'
       last_response.should be_ok
-      posts = JSON.parse(last_response.body)
-      posts.should be_an_instance_of(Array)
-      posts.length.should == 2
+      rooms = JSON.parse(last_response.body)
+      rooms.should be_an_instance_of(Array)
+      rooms.length.should == 2
     end
   end
 
-  describe "GET on /api/v1/posts/:id" do
+  describe "GET on /api/v1/rooms/:id" do
     before(:each) do
-      @post = Post.create(
-        :title => 'A fine tittle',
-        :body => 'A not so long body'
+      @room = Room.create(
+        :name => 'A fine room',
+        :capacity => 1000
       )
     end
 
-    it "should return a post with title" do
-      get "/api/v1/posts/#{@post.id}"
+    it "should return a room with name" do
+      get "/api/v1/rooms/#{@room.id}"
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)["post"]
-      attributes['title'].should == 'A fine tittle'
+      attributes = JSON.parse(last_response.body)["room"]
+      attributes['name'].should == 'A fine room'
     end
 
-    it "should return a post with a body" do
-      get "/api/v1/posts/#{@post.id}"
+    it "should return a room with capacity" do
+      get "/api/v1/rooms/#{@room.id}"
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)["post"]
-      attributes['body'].should == 'A not so long body'
+      attributes = JSON.parse(last_response.body)["room"]
+      attributes['capacity'].should == 1000
     end
 
-    it "should return a 404 for a user that doesn't exist" do
-      get '/api/v1/posts/12312'
+    it "should return a 404 for a room that doesn't exist" do
+      get '/api/v1/rooms/12312'
       last_response.status.should == 404
     end
   end
 
-  describe "POST on /api/v1/posts" do
-    it "should create and return a post" do
+  describe "POST on /api/v1/rooms" do
+    it "should create and return a room" do
       data = {
-        :title => "trotter",
-        :body  => "no spam"
+        :name       => 'room A',
+        :capacity   => 45
       }
-      post '/api/v1/posts', data.to_json
+      post '/api/v1/rooms', data.to_json
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)['post']
+      attributes = JSON.parse(last_response.body)['room']
       attributes.should have_key("id")
-      attributes['title'].should == 'trotter'
-      attributes['body'].should == 'no spam'
+      attributes['name'].should == 'room A'
+      attributes['capacity'].should == 45
     end
   end
 
-  describe "PUT on /api/v1/posts/:id" do
-    it "should update a post" do
-      @post = Post.create(
-        :title => 'Woopie',
-        :body => 'Long ago...'
+  describe "PUT on /api/v1/rooms/:id" do
+    it "should update a room" do
+      @room = Room.create(
+        :name     => 'Woopie',
+        :capacity => 100
       )
       data = {
-        :title => 'Woopies',
-        :body => 'Not so long ago...'
+        :name     => 'Woopies',
+        :capacity => 300
       }
-      put "/api/v1/posts/#{@post.id}", data.to_json
+      put "/api/v1/rooms/#{@room.id}", data.to_json
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)['post']
-      attributes['id'].should == @post.id
-      attributes['title'].should == 'Woopies'
-      attributes['body'].should == 'Not so long ago...'
+      attributes = JSON.parse(last_response.body)['room']
+      attributes['id'].should == @room.id
+      attributes['name'].should == 'Woopies'
+      attributes['capacity'].should == 300
     end
   end
 
-  describe "DELETE on /api/v1/posts/:id" do
+  describe "DELETE on /api/v1/rooms/:id" do
     it "should delete a post by id" do
-      @post = Post.create(
-        :title => 'Woopie',
-        :body => 'Long ago...'
+      @room = Room.create(
+        :name     => 'Woopie',
+        :capacity => 50
       )
-      delete "/api/v1/posts/#{@post.id}"
+      delete "/api/v1/rooms/#{@room.id}"
       last_response.should be_ok
-      get "/api/v1/posts/#{@post.id}"
+      get "/api/v1/room/#{@room.id}"
       last_response.status.should == 404
     end
   end
