@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
+
 require './service'
-use ActiveRecord::ConnectionAdapters::ConnectionManagement
-run Sinatra::Application
+run Rack::URLMap.new('/api/v1' => Sinatra::Application)

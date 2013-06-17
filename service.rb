@@ -11,12 +11,12 @@ end
 # the HTTP entry points to our service
 
 # get all classrooms
-get '/api/v1/classrooms' do
+get '/classrooms' do
   Classroom.all.to_json
 end
 
 # get a classroom by id
-get '/api/v1/classrooms/:id' do
+get '/classrooms/:id' do
   classroom = Classroom.find_by_id(params[:id])
   if classroom
     classroom.to_json
@@ -26,7 +26,7 @@ get '/api/v1/classrooms/:id' do
 end
 
 # create a classroom
-post '/api/v1/classrooms' do
+post '/classrooms' do
   begin
     classroom = Classroom.create(JSON.parse(request.body.read))
     if classroom.valid?
@@ -40,7 +40,7 @@ post '/api/v1/classrooms' do
 end
 
 # update a classroom
-put '/api/v1/classrooms/:id' do
+put '/classrooms/:id' do
   classroom = Classroom.find_by_id(params['id'])
   if classroom
     begin
@@ -60,7 +60,7 @@ put '/api/v1/classrooms/:id' do
 end
 
 # delete a classroom
-delete '/api/v1/classrooms/:id' do
+delete '/classrooms/:id' do
   classroom = Classroom.find_by_id(params[:id])
   if classroom
     classroom.destroy
