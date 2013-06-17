@@ -1,6 +1,6 @@
-class CreateRooms < ActiveRecord::Migration
+class CreateClassrooms < ActiveRecord::Migration
   def up
-    create_table :rooms do |t|
+    create_table :classrooms do |t|
       t.string :name
       t.integer :capacity
 
@@ -9,6 +9,6 @@ class CreateRooms < ActiveRecord::Migration
   end
 
   def down
-    drop_table :room
+    drop_table :classrooms
   end
 end

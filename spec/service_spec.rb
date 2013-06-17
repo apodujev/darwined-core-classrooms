@@ -18,67 +18,67 @@ end
 # The test for our service
 describe "service" do
   before(:each) do
-    Room.delete_all
+    Classroom.delete_all
   end
 
-  describe "GET ON /api/v1/rooms" do
-    it "should return all rooms" do
-      Room.create(:name => 'A', :capacity => 50)
-      Room.create(:name => 'B', :capacity => 100)
-      get '/api/v1/rooms'
+  describe "GET ON /api/v1/classrooms" do
+    it "should return all classrooms" do
+      Classroom.create(:name => 'A', :capacity => 50)
+      Classroom.create(:name => 'B', :capacity => 100)
+      get '/api/v1/classrooms'
       last_response.should be_ok
-      rooms = JSON.parse(last_response.body)
-      rooms.should be_an_instance_of(Array)
-      rooms.length.should == 2
+      classrooms = JSON.parse(last_response.body)
+      classrooms.should be_an_instance_of(Array)
+      classrooms.length.should == 2
     end
   end
 
-  describe "GET on /api/v1/rooms/:id" do
+  describe "GET on /api/v1/classrooms/:id" do
     before(:each) do
-      @room = Room.create(
-        :name => 'A fine room',
+      @classroom = Classroom.create(
+        :name => 'A fine classroom',
         :capacity => 1000
       )
     end
 
-    it "should return a room with name" do
-      get "/api/v1/rooms/#{@room.id}"
+    it "should return a classroom with name" do
+      get "/api/v1/classrooms/#{@classroom.id}"
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)["room"]
-      attributes['name'].should == 'A fine room'
+      attributes = JSON.parse(last_response.body)['classroom']
+      attributes['name'].should == 'A fine classroom'
     end
 
-    it "should return a room with capacity" do
-      get "/api/v1/rooms/#{@room.id}"
+    it "should return a classroom with capacity" do
+      get "/api/v1/classrooms/#{@classroom.id}"
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)["room"]
+      attributes = JSON.parse(last_response.body)['classroom']
       attributes['capacity'].should == 1000
     end
 
-    it "should return a 404 for a room that doesn't exist" do
-      get '/api/v1/rooms/12312'
+    it "should return a 404 for a classroom that doesn't exist" do
+      get '/api/v1/classrooms/12312'
       last_response.status.should == 404
     end
   end
 
-  describe "POST on /api/v1/rooms" do
-    it "should create and return a room" do
+  describe "POST on /api/v1/classrooms" do
+    it "should create and return a classroom" do
       data = {
-        :name       => 'room A',
+        :name       => 'classroom A',
         :capacity   => 45
       }
-      post '/api/v1/rooms', data.to_json
+      post '/api/v1/classrooms', data.to_json
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)['room']
+      attributes = JSON.parse(last_response.body)['classroom']
       attributes.should have_key("id")
-      attributes['name'].should == 'room A'
+      attributes['name'].should == 'classroom A'
       attributes['capacity'].should == 45
     end
   end
 
-  describe "PUT on /api/v1/rooms/:id" do
-    it "should update a room" do
-      @room = Room.create(
+  describe "PUT on /api/v1/classrooms/:id" do
+    it "should update a classroom" do
+      @classroom = Classroom.create(
         :name     => 'Woopie',
         :capacity => 100
       )
@@ -86,24 +86,24 @@ describe "service" do
         :name     => 'Woopies',
         :capacity => 300
       }
-      put "/api/v1/rooms/#{@room.id}", data.to_json
+      put "/api/v1/classrooms/#{@classroom.id}", data.to_json
       last_response.should be_ok
-      attributes = JSON.parse(last_response.body)['room']
-      attributes['id'].should == @room.id
+      attributes = JSON.parse(last_response.body)['classroom']
+      attributes['id'].should == @classroom.id
       attributes['name'].should == 'Woopies'
       attributes['capacity'].should == 300
     end
   end
 
-  describe "DELETE on /api/v1/rooms/:id" do
+  describe "DELETE on /api/v1/classrooms/:id" do
     it "should delete a post by id" do
-      @room = Room.create(
+      @classroom = Classroom.create(
         :name     => 'Woopie',
         :capacity => 50
       )
-      delete "/api/v1/rooms/#{@room.id}"
+      delete "/api/v1/classrooms/#{@classroom.id}"
       last_response.should be_ok
-      get "/api/v1/room/#{@room.id}"
+      get "/api/v1/classroom/#{@classroom.id}"
       last_response.status.should == 404
     end
   end

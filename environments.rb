@@ -1,9 +1,9 @@
 configure :development do
-  set :database, 'sqlite:///db/development.sqlite3.db'  
+  set :database, 'sqlite:///db/development.sqlite3'
 end
 
 configure :test do
-  set :database, 'sqlite:///db/test.sqlite3.db'  
+  set :database, 'sqlite:///db/test.sqlite3'
 end
 
 configure :production do

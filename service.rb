@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require './environments'
-require './models/room'
+require './models/classroom'
 
 # Set Content-Type for all requests
 before do
@@ -10,63 +10,63 @@ end
 
 # the HTTP entry points to our service
 
-# get all rooms
-get '/api/v1/rooms' do
-  Room.all.to_json
+# get all classrooms
+get '/api/v1/classrooms' do
+  Classroom.all.to_json
 end
 
-# get a room by id
-get '/api/v1/rooms/:id' do
-  room = Room.find_by_id(params[:id])
-  if room
-    room.to_json
+# get a classroom by id
+get '/api/v1/classrooms/:id' do
+  classroom = Classroom.find_by_id(params[:id])
+  if classroom
+    classroom.to_json
   else
-    error 404, {:error => "room not found"}.to_json
+    error 404, {:error => "classroom not found"}.to_json
   end
 end
 
-# create a room
-post '/api/v1/rooms' do
+# create a classroom
+post '/api/v1/classrooms' do
   begin
-    room = Room.create(JSON.parse(request.body.read))
-    if room.valid?
-      room.to_json
+    classroom = Classroom.create(JSON.parse(request.body.read))
+    if classroom.valid?
+      classroom.to_json
     else
-      error 400, room.errors.to_json # :bad_request
+      error 400, classroom.errors.to_json # :bad_request
     end
   rescue => e
     error 400, {:error => e.message}.to_json
   end
 end
 
-# update a room
-put '/api/v1/rooms/:id' do
-  room = Room.find_by_id(params['id'])
-  if room
+# update a classroom
+put '/api/v1/classrooms/:id' do
+  classroom = Classroom.find_by_id(params['id'])
+  if classroom
     begin
       attributes = JSON.parse(request.body.read)
-      updated_room = room.update_attributes(attributes)
-      if updated_room
-        room.to_json
+      updated_classroom = classroom.update_attributes(attributes)
+      if updated_classroom
+        classroom.to_json
       else
-        error 400, room.errors.to_json
+        error 400, classroom.errors.to_json
       end
     rescue => e
       error 400, {:error => e.message}.to_json
     end
   else
-    error 404, {:error => 'room not found'}.to_json
+    error 404, {:error => 'classroom not found'}.to_json
   end
 end
 
-# delete a room
-delete '/api/v1/rooms/:id' do
-  room = Room.find_by_id(params[:id])
-  if room
-    room.destroy
-    room.to_json
+# delete a classroom
+delete '/api/v1/classrooms/:id' do
+  classroom = Classroom.find_by_id(params[:id])
+  if classroom
+    classroom.destroy
+    classroom.to_json
   else
-    error 404, {:error => 'room not found'}.to_json
+    error 404, {:error => 'classroom not found'}.to_json
   end
 end
 
