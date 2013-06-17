@@ -1,15 +1,14 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'sinatra/reloader' if development?
-require'./environments'
+require './environments'
 require './models/room'
 
-# the HTTP entry points to our service
-
-# set content type for all requests
+# Set Content-Type for all requests
 before do
   content_type 'application/json'
 end
+
+# the HTTP entry points to our service
 
 # get all rooms
 get '/api/v1/rooms' do
