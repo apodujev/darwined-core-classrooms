@@ -3,7 +3,11 @@ configure :development do
 end
 
 configure :test do
-  set :database, 'sqlite:///db/test.sqlite3'
+  set :database, {
+    :adapter => 'sqlite3',
+    :database => ':memory:',
+    :timeout => 500
+  }
 end
 
 configure :production do
