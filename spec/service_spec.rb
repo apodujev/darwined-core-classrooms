@@ -4,7 +4,7 @@ ENV['RACK_ENV'] = ENV['SINATRA_ENV'] = 'test'
 require_relative 'spec_helper'
 require 'sinatra/activerecord/rake'
 require 'rack/test'
-require_relative '../service'
+require File.join(File.dirname(__FILE__), '..', 'service')
 
 # Configure RSpec to use rack-test methods
 RSpec.configure do |conf|
