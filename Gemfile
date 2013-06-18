@@ -5,6 +5,7 @@ gem 'sinatra-contrib'
 gem 'sinatra-activerecord', :github => 'zenbaku/sinatra-activerecord'
 gem "activerecord"
 gem 'rake'
+gem 'json'
 
 group :development do
   gem 'sqlite3'
