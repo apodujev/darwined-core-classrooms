@@ -1,7 +1,7 @@
 # Ensure env is set to `test`
 ENV['RACK_ENV'] = ENV['SINATRA_ENV'] = 'test'
 
-require_relative 'spec_helper'
+require File.join(File.dirname(__FILE__), 'spec_helper')
 require 'sinatra/activerecord/rake'
 require 'rack/test'
 require File.join(File.dirname(__FILE__), '..', 'service')
