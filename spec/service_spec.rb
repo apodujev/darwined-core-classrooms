@@ -45,7 +45,8 @@ describe "service" do
     before(:each) do
       @classroom = Classroom.create(
         :name => 'A fine classroom',
-        :capacity => 1000
+        :capacity => 1000,
+        :code => 'A102'
       )
     end
 
@@ -63,6 +64,13 @@ describe "service" do
       attributes['capacity'].should == 1000
     end
 
+    it "should return a classroom with code" do
+      get "/classrooms/#{@classroom.id}"
+      last_response.should be_ok
+      attributes = JSON.parse(last_response.body)['classroom']
+      attributes['code'].should == 'A102'
+    end
+
     it "should return a 404 for a classroom that doesn't exist" do
       get '/classrooms/12312'
       last_response.status.should == 404
@@ -73,7 +81,8 @@ describe "service" do
     it "should create and return a classroom" do
       data = {
         :name       => 'classroom A',
-        :capacity   => 45
+        :capacity   => 45,
+        :code       => 'E405'
       }
       post '/classrooms', data.to_json
       last_response.should be_ok
@@ -81,6 +90,7 @@ describe "service" do
       attributes.should have_key("id")
       attributes['name'].should == 'classroom A'
       attributes['capacity'].should == 45
+      attributes['code'].should == 'E405'
     end
   end
 
@@ -92,7 +102,8 @@ describe "service" do
       )
       data = {
         :name     => 'Woopies',
-        :capacity => 300
+        :capacity => 300,
+        :code     => 'T607'
       }
       put "/classrooms/#{@classroom.id}", data.to_json
       last_response.should be_ok
@@ -100,6 +111,7 @@ describe "service" do
       attributes['id'].should == @classroom.id
       attributes['name'].should == 'Woopies'
       attributes['capacity'].should == 300
+      attributes['code'].should == 'T607'
     end
   end
 
